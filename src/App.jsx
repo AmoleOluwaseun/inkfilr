@@ -85,6 +85,7 @@ function App() {
   const [activeSection, setActiveSection] = useState('section_1')
   const [isSticky, setIsSticky] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [selectedProject, setSelectedProject] = useState(null)
 
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY > 24)
@@ -205,12 +206,12 @@ function App() {
                   alt="Profile avatar"
                   className="h-16 w-16 rounded-full object-cover"
                 />
-                <h1 className="text-4xl font-bold leading-tight text-[var(--inkfilr-text)] sm:text-5xl">
+                <h1 className="text-3xl font-bold leading-tight text-[var(--inkfilr-text)] sm:text-5xl">
                   Hello friend!
                 </h1>
               </div>
 
-              <h2 className="mt-6 inline-block rounded-full bg-white px-6 py-4 text-4xl font-bold leading-tight text-[var(--inkfilr-secondary)] sm:text-5xl">
+              <h2 className="mt-6 inline-block rounded-full bg-white px-6 py-4 text-3xl font-bold leading-tight text-[var(--inkfilr-secondary)] sm:text-5xl">
                 I&apos;m available for freelance work.
               </h2>
 
@@ -297,7 +298,7 @@ function App() {
                   className="group relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
                   <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-4">
-                    <h4 className="text-4xl font-bold">{service.title}</h4>
+                    <h4 className="text-3xl font-bold sm:text-4xl">{service.title}</h4>
                     <span className="rounded-full bg-[var(--inkfilr-primary)] px-4 py-2 text-sm font-bold text-white">
                       {service.price}
                     </span>
@@ -340,12 +341,19 @@ function App() {
                 <p className="text-sm font-bold uppercase tracking-wider text-[var(--inkfilr-secondary)]">
                   {project.tag}
                 </p>
-                <h4 className="mt-2 text-5xl font-bold">{project.title}</h4>
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="mt-6 h-[320px] w-full rounded-3xl object-cover"
-                />
+                <h4 className="mt-2 text-4xl font-bold sm:text-5xl">{project.title}</h4>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProject(project)}
+                  className="mt-6 w-full overflow-hidden rounded-3xl"
+                  aria-label={`Open ${project.title} preview`}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="h-[320px] w-full rounded-3xl object-cover transition-transform duration-300 hover:scale-[1.02]"
+                  />
+                </button>
               </article>
             ))}
           </div>
@@ -415,7 +423,10 @@ function App() {
               </div>
             </div>
 
-            <form className="space-y-4 rounded-3xl bg-white p-8 shadow-sm lg:col-span-6">
+            <form
+              className="space-y-4 rounded-3xl bg-white p-8 shadow-sm lg:col-span-6"
+              onSubmit={(event) => event.preventDefault()}
+            >
               <div className="grid gap-4 md:grid-cols-2">
                 <input
                   type="text"
@@ -438,7 +449,7 @@ function App() {
                       key={service.title}
                       className="flex cursor-pointer flex-col items-center gap-3 rounded-xl border border-slate-300 px-3 py-4 text-lg text-[var(--inkfilr-muted)]"
                     >
-                      <input type="checkbox" className="hidden" />
+                      <input type="checkbox" className="accent-[var(--inkfilr-secondary)]" />
                       <ServiceIcon className="h-5 w-5 text-[var(--inkfilr-secondary)]" />
                       <span>{service.title}</span>
                     </label>
@@ -470,6 +481,35 @@ function App() {
           Copyright © 2036 <span className="font-bold">inkfilr</span>. All rights reserved.
         </p>
       </footer>
+
+      {selectedProject && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${selectedProject.title} preview`}
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-white p-3 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setSelectedProject(null)}
+              className="absolute right-4 top-4 rounded-full bg-white/90 p-2 text-[var(--inkfilr-text)]"
+              aria-label="Close preview"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <img
+              src={selectedProject.image}
+              alt={selectedProject.title}
+              className="max-h-[80vh] w-full rounded-2xl object-cover"
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

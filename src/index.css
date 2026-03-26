@@ -1,12 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 
 :root {
-  --inkfilr-primary: #535da1;
-  --inkfilr-secondary: #14b789;
-  --inkfilr-bg: #f9f9f9;
-  --inkfilr-text: #1f2531;
-  --inkfilr-muted: #717275;
+  --ink-bg: #fafafa;
+  --ink-surface: #ffffff;
+  --ink-surface-raised: #f4f4f5;
+  --ink-text: #18181b;
+  --ink-text-secondary: #52525b;
+  --ink-text-muted: #a1a1aa;
+  --ink-border: #e4e4e7;
+  --ink-border-subtle: #f0f0f2;
+  --ink-coral: #f0654a;
+  --ink-teal: #14b8a6;
+  --ink-blue: #3b82f6;
+  --ink-yellow: #f59e0b;
+  --ink-purple: #8b5cf6;
+  --ink-coral-soft: #fef2f0;
+  --ink-teal-soft: #ecfdf8;
+  --ink-blue-soft: #eff6ff;
+  --ink-yellow-soft: #fffbeb;
+  --ink-purple-soft: #f5f3ff;
 }
 
 * {
@@ -19,9 +32,15 @@ html {
 
 body {
   margin: 0;
-  font-family: 'DM Sans', sans-serif;
-  color: var(--inkfilr-text);
-  background-color: var(--inkfilr-bg);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--ink-text);
+  background-color: var(--ink-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', 'DM Sans', system-ui, sans-serif;
 }
 
 a {
@@ -30,8 +49,45 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid var(--inkfilr-secondary);
+  outline: 2px solid var(--ink-coral);
   outline-offset: 2px;
+}
+
+@keyframes wave-drift {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.wave-animation {
+  animation: wave-drift 20s linear infinite;
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+.float-animation-delayed {
+  animation: float 6s ease-in-out 2s infinite;
+}
+
+.step-line {
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--ink-border) 0px,
+    var(--ink-border) 6px,
+    transparent 6px,
+    transparent 12px
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
